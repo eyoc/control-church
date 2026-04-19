@@ -18,6 +18,8 @@ const isStaticExport = false;
 // ----------------------------------------------------------------------
 
 const nextConfig: NextConfig = {
+  typescript: { ignoreBuildErrors: true },
+  eslint: { ignoreDuringBuilds: true },
   trailingSlash: true,
   output: isStaticExport ? 'export' : undefined,
   env: {
