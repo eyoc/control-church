@@ -110,8 +110,8 @@ export function JwtSignUpView() {
 
       <Field.Text
         name="password"
-        label="Password"
-        placeholder="6+ characters"
+        label="Contrasena"
+        placeholder="6+ caracteres"
         type={showPassword.value ? 'text' : 'password'}
         slotProps={{
           inputLabel: { shrink: true },
@@ -144,12 +144,12 @@ export function JwtSignUpView() {
   return (
     <>
       <FormHead
-        title="Get started absolutely free"
+        title="Crea tu cuenta gratis"
         description={
           <>
-            {`Already have an account? `}
+            {`Ya tienes cuenta? `}
             <Link component={RouterLink} href={paths.auth.jwt.signIn} variant="subtitle2">
-              Get started
+              Inicia sesion
             </Link>
           </>
         }

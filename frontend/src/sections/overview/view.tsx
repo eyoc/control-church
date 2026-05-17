@@ -24,13 +24,13 @@ export function OverviewView() {
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard title="Miembros" value="—" color="#00A76F" />
+          <StatCard title="Miembros" value="—" color="#06B6D4" />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard title="Grupos" value="—" color="#8E33FF" />
+          <StatCard title="Grupos" value="—" color="#1A2744" />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <StatCard title="Asistencia (mes)" value="—" color="#00B8D9" />
+          <StatCard title="Asistencia (mes)" value="—" color="#0891B2" />
         </Grid>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <StatCard title="Ingresos (mes)" value="—" color="#FFAB00" />

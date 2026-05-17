@@ -26,7 +26,7 @@ export const themeConfig: ThemeConfig = {
   defaultMode: 'light',
   modeStorageKey: 'theme-mode',
   direction: 'ltr',
-  classesPrefix: 'minimal',
+  classesPrefix: 'cc',
   /** **************************************
    * Css variables
    *************************************** */
@@ -46,19 +46,19 @@ export const themeConfig: ThemeConfig = {
    *************************************** */
   palette: {
     primary: {
-      lighter: '#C8FAD6',
-      light: '#5BE49B',
-      main: '#00A76F',
-      dark: '#007867',
-      darker: '#004B50',
+      lighter: '#CFFAFE',
+      light: '#22D3EE',
+      main: '#06B6D4',
+      dark: '#0891B2',
+      darker: '#155E75',
       contrastText: '#FFFFFF',
     },
     secondary: {
-      lighter: '#EFD6FF',
-      light: '#C684FF',
-      main: '#8E33FF',
-      dark: '#5119B7',
-      darker: '#27097A',
+      lighter: '#C7D2FE',
+      light: '#3B5998',
+      main: '#1A2744',
+      dark: '#131C33',
+      darker: '#0C1322',
       contrastText: '#FFFFFF',
     },
     info: {

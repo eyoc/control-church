@@ -11,7 +11,7 @@ import { themeConfig, ThemeProvider, primary as primaryColor } from 'src/theme';
 import { ProgressBar } from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { detectSettings } from 'src/components/settings/server';
-import { SettingsDrawer, defaultSettings, SettingsProvider } from 'src/components/settings';
+import { defaultSettings, SettingsProvider } from 'src/components/settings';
 
 import { AuthProvider } from 'src/auth/context/jwt';
 
@@ -58,7 +58,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const appConfig = await getAppConfig();
 
   return (
-    <html lang="en" dir={appConfig.dir} suppressHydrationWarning>
+    <html lang="es" dir={appConfig.dir} suppressHydrationWarning>
       <body>
         <InitColorSchemeScript
           modeStorageKey={themeConfig.modeStorageKey}
@@ -78,7 +78,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               >
                 <MotionLazy>
                   <ProgressBar />
-                  <SettingsDrawer defaultSettings={defaultSettings} />
                   {children}
                 </MotionLazy>
               </ThemeProvider>

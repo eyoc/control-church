@@ -9,18 +9,11 @@ import { merge } from 'es-toolkit';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import Alert from '@mui/material/Alert';
-
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
-
-import { CONFIG } from 'src/global-config';
 
 import { Logo } from 'src/components/logo';
 
 import { AuthSplitSection } from './section';
 import { AuthSplitContent } from './content';
-import { SettingsButton } from '../components/settings-button';
 import { MainSection, LayoutSection, HeaderSection } from '../core';
 
 // ----------------------------------------------------------------------
@@ -50,11 +43,6 @@ export function AuthSplitLayout({
     };
 
     const headerSlots: HeaderSectionProps['slots'] = {
-      topArea: (
-        <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
-          This is an info Alert.
-        </Alert>
-      ),
       leftArea: (
         <>
           {/** @slot Logo */}
@@ -72,8 +60,6 @@ export function AuthSplitLayout({
             ¿Necesitás ayuda?
           </Link>
 
-          {/** @slot Settings button */}
-          <SettingsButton />
         </Box>
       ),
     };
@@ -105,15 +91,7 @@ export function AuthSplitLayout({
     >
       <AuthSplitSection
         layoutQuery={layoutQuery}
-        method={CONFIG.auth.method}
         {...slotProps?.section}
-        methods={[
-          {
-            label: 'Jwt',
-            path: paths.auth.jwt.signIn,
-            icon: `${CONFIG.assetsDir}/assets/icons/platforms/ic-jwt.svg`,
-          },
-        ]}
       />
       <AuthSplitContent layoutQuery={layoutQuery} {...slotProps?.content}>
         {children}

@@ -32,9 +32,9 @@ export function AuthSplitSection({
   method,
   methods,
   layoutQuery = 'md',
-  title = 'Manage the job',
+  title = 'Conecta. Crece. Sirve.',
   imgUrl = `${CONFIG.assetsDir}/assets/illustrations/illustration-dashboard.webp`,
-  subtitle = 'More effectively with optimized workflows.',
+  subtitle = 'Gestion integral para tu iglesia.',
   ...other
 }: AuthSplitSectionProps) {
   return (
