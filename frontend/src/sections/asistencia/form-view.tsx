@@ -23,7 +23,6 @@ import axios, { endpoints } from 'src/lib/axios';
 
 import { Form, Field } from 'src/components/hook-form';
 
-import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +38,6 @@ type SchemaType = zod.infer<typeof Schema>;
 export function AsistenciaFormView() {
   const router = useRouter();
   const { iglesiaId } = useIglesia();
-  const { user } = useAuthContext();
   const [error, setError] = useState<string | null>(null);
 
   const methods = useForm<SchemaType>({
@@ -60,9 +58,9 @@ export function AsistenciaFormView() {
       await axios.post(endpoints.asistencia, {
         ...data,
         iglesiaId,
-        registradoPor: user?.id,
         titulo: data.titulo || undefined,
         notas: data.notas || undefined,
+        detalle: [],
       });
       router.push(paths.dashboard.asistencia.root);
     } catch (e: any) {
