@@ -1,7 +1,6 @@
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { isValidPhoneNumber } from 'react-phone-number-input/input';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -28,7 +27,7 @@ export const UpdateUserSchema = zod.object({
     .min(1, { message: 'Email is required!' })
     .email({ message: 'Email must be a valid email address!' }),
   photoURL: schemaHelper.file({ message: 'Avatar is required!' }),
-  phoneNumber: schemaHelper.phoneNumber({ isValid: isValidPhoneNumber }),
+  phoneNumber: zod.string(),
   country: schemaHelper.nullableInput(zod.string().min(1, { message: 'Country is required!' }), {
     // message for null value
     message: 'Country is required!',
