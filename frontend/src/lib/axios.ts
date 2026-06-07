@@ -13,18 +13,14 @@ const axiosInstance = axios.create({
   },
 });
 
-/**
- * Optional: Add token (if using auth)
- *
- axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+axiosInstance.interceptors.request.use((config) => {
+  const token =
+    typeof window !== 'undefined' ? sessionStorage.getItem('jwt_access_token') : null;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
-*
-*/
 
 axiosInstance.interceptors.response.use(
   (response) => response,
