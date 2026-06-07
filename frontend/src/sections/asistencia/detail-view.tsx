@@ -19,7 +19,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Iconify from 'src/components/iconify';
+import { Iconify } from 'src/components/iconify';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -32,8 +32,8 @@ import axios, { endpoints } from 'src/lib/axios';
 
 type Miembro = {
   id: number;
-  nombres: string;
-  apellidos: string;
+  nombre: string;
+  apellido: string;
   fotoUrl?: string;
 };
 
@@ -163,7 +163,7 @@ export function AsistenciaDetailView({ id }: Props) {
   // Filter members by search
   const filteredMiembros = miembros.filter((m) => {
     if (!search) return true;
-    const fullName = `${m.nombres} ${m.apellidos}`.toLowerCase();
+    const fullName = `${m.nombre} ${m.apellido}`.toLowerCase();
     return fullName.includes(search.toLowerCase());
   });
 
