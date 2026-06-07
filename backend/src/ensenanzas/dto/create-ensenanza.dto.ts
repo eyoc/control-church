@@ -16,7 +16,7 @@ export class CreateEnsenanzaDto {
 
   @IsString()
   @IsOptional()
-  @MaxLength(500)
+  @MaxLength(5000)
   descripcion?: string;
 
   @IsIn(['sermon', 'estudio', 'material'])
