@@ -125,6 +125,15 @@ export function GruposListView() {
                     <TableCell align="right">
                       <IconButton
                         component={RouterLink}
+                        href={paths.dashboard.grupos.miembros(g.id)}
+                        color="info"
+                        size="small"
+                        title="Miembros"
+                      >
+                        <Iconify icon="solar:users-group-rounded-bold" />
+                      </IconButton>
+                      <IconButton
+                        component={RouterLink}
                         href={paths.dashboard.grupos.editar(g.id)}
                         color="primary"
                         size="small"

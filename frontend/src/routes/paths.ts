@@ -25,6 +25,7 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/grupos`,
       nuevo: `${ROOTS.DASHBOARD}/grupos/nuevo`,
       editar: (id: number) => `${ROOTS.DASHBOARD}/grupos/${id}/editar`,
+      miembros: (id: number) => `${ROOTS.DASHBOARD}/grupos/${id}/miembros`,
     },
     asistencia: {
       root: `${ROOTS.DASHBOARD}/asistencia`,

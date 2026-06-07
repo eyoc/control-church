@@ -19,3 +19,5 @@ export * from './rhf-text-field';
 export * from './rhf-date-picker';
 
 export * from './rhf-radio-group';
+
+export * from './rhf-editor';

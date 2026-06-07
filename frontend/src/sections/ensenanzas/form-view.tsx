@@ -95,7 +95,8 @@ export function EnsenanzaFormView() {
                 <Field.Text name="tags" label="Tags (separados por coma)" />
               </Grid>
               <Grid size={{ xs: 12 }}>
-                <Field.Text name="descripcion" label="Descripción" multiline rows={3} />
+                <Typography variant="subtitle2" sx={{ mb: 1 }}>Contenido / Descripción</Typography>
+                <Field.Editor name="descripcion" />
               </Grid>
             </Grid>
           </CardContent>

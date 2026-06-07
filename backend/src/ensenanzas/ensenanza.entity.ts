@@ -19,7 +19,7 @@ export class Ensenanza {
   @Column({ length: 200 })
   titulo: string;
 
-  @Column({ length: 500, nullable: true })
+  @Column({ type: 'nvarchar', length: 'max', nullable: true })
   descripcion: string;
 
   @Column({ length: 30, default: 'sermon' })
