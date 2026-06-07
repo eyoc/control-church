@@ -1,0 +1,22 @@
+import type { Metadata } from 'next';
+import type { IUserItem } from 'src/types/user';
+
+import { CONFIG } from 'src/global-config';
+
+import { UserEditView } from 'src/sections/user/view';
+
+// ----------------------------------------------------------------------
+
+export const metadata: Metadata = { title: `User edit | Dashboard - ${CONFIG.appName}` };
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function Page({ params }: Props) {
+  const { id } = await params;
+
+  // TODO: fetch user from API using id
+  return <UserEditView user={undefined} />;
+}
+
