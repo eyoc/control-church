@@ -1,7 +1,7 @@
 'use client';
 
 import { z as zod } from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -10,8 +10,8 @@ import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 
 import { paths } from 'src/routes/paths';
@@ -23,46 +23,60 @@ import axios, { endpoints } from 'src/lib/axios';
 
 import { Form, Field } from 'src/components/hook-form';
 
-
 // ----------------------------------------------------------------------
 
+type Categoria = {
+  id: number;
+  nombre: string;
+  tipo: string;
+};
+
 const Schema = zod.object({
-  tipo: zod.enum(['servicio', 'celula', 'evento']),
-  titulo: zod.string().optional(),
+  monto: zod.coerce.number().min(0.01, 'El monto debe ser mayor a 0'),
   fecha: zod.string().min(1, 'Requerido'),
-  notas: zod.string().optional(),
+  descripcion: zod.string().min(1, 'Requerido'),
+  categoriaId: zod.coerce.number().optional(),
+  beneficiario: zod.string().optional(),
 });
 
 type SchemaType = zod.infer<typeof Schema>;
 
-export function AsistenciaFormView() {
+export function EgresoFormView() {
   const router = useRouter();
   const { iglesiaId } = useIglesia();
   const [error, setError] = useState<string | null>(null);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const methods = useForm<SchemaType>({
     resolver: zodResolver(Schema),
     defaultValues: {
-      tipo: 'servicio',
-      titulo: '',
+      monto: 0,
       fecha: new Date().toISOString().split('T')[0],
-      notas: '',
+      descripcion: '',
+      categoriaId: undefined,
+      beneficiario: '',
     },
   });
 
   const { handleSubmit, formState: { isSubmitting } } = methods;
 
+  useEffect(() => {
+    if (!iglesiaId) return;
+    axios
+      .get<Categoria[]>(endpoints.finanzas.categorias, { params: { iglesiaId } })
+      .then((res) => setCategorias(res.data.filter((c) => c.tipo === 'egreso')));
+  }, [iglesiaId]);
+
   const onSubmit = handleSubmit(async (data) => {
     try {
-      if (!iglesiaId) throw new Error('Seleccioná una iglesia primero');
-      const response = await axios.post(endpoints.asistencia, {
+      if (!iglesiaId) throw new Error('Selecciona una iglesia primero');
+      await axios.post(endpoints.finanzas.egresos, {
         ...data,
         iglesiaId,
-        titulo: data.titulo || undefined,
-        notas: data.notas || undefined,
-        detalle: [],
+        categoriaId: data.categoriaId || undefined,
+        beneficiario: data.beneficiario || undefined,
       });
-      router.push(paths.dashboard.asistencia.detalle(response.data.id));
+      router.push(paths.dashboard.finanzas.egresos);
     } catch (e: any) {
       setError(e.message);
     }
@@ -70,7 +84,8 @@ export function AsistenciaFormView() {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 3 }}>Registrar asistencia</Typography>
+      <Typography variant="h4" sx={{ mb: 3 }}>Nuevo egreso</Typography>
+
       {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
       <Form methods={methods} onSubmit={onSubmit}>
@@ -78,29 +93,35 @@ export function AsistenciaFormView() {
           <CardContent>
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, sm: 6 }}>
-                <Field.Select name="tipo" label="Tipo de evento">
-                  <MenuItem value="servicio">Servicio</MenuItem>
-                  <MenuItem value="celula">Célula</MenuItem>
-                  <MenuItem value="evento">Evento especial</MenuItem>
+                <Field.Text name="monto" label="Monto *" type="number" />
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Field.Text name="fecha" label="Fecha *" type="date"
+                  slotProps={{ inputLabel: { shrink: true } }} />
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <Field.Select name="categoriaId" label="Categoria">
+                  <MenuItem value="">Sin categoria</MenuItem>
+                  {categorias.map((c) => (
+                    <MenuItem key={c.id} value={c.id}>{c.nombre}</MenuItem>
+                  ))}
                 </Field.Select>
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
-                <Field.Text name="fecha" label="Fecha" type="date"
-                  slotProps={{ inputLabel: { shrink: true } }} />
+                <Field.Text name="beneficiario" label="Beneficiario" />
               </Grid>
               <Grid size={{ xs: 12 }}>
-                <Field.Text name="titulo" label="Título (opcional)" />
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Field.Text name="notas" label="Notas" multiline rows={3} />
+                <Field.Text name="descripcion" label="Descripcion *" multiline rows={3} />
               </Grid>
             </Grid>
           </CardContent>
         </Card>
 
         <Box sx={{ mt: 3, display: 'flex', gap: 2 }}>
-          <Button variant="contained" type="submit" loading={isSubmitting}>Guardar</Button>
-          <Button variant="outlined" onClick={() => router.push(paths.dashboard.asistencia.root)}>
+          <Button variant="contained" type="submit" loading={isSubmitting}>
+            Guardar
+          </Button>
+          <Button variant="outlined" onClick={() => router.push(paths.dashboard.finanzas.egresos)}>
             Cancelar
           </Button>
         </Box>

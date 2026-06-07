@@ -22,6 +22,13 @@ export class DetalleAsistenciaDto {
   notas?: string;
 }
 
+export class UpdateAsistenciaDetalleDto {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => DetalleAsistenciaDto)
+  detalle: DetalleAsistenciaDto[];
+}
+
 export class CreateAsistenciaDto {
   @IsInt()
   iglesiaId: number;

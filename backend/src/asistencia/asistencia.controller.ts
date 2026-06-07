@@ -1,9 +1,9 @@
 import {
-  Controller, Get, Post, Param, Body, Query,
+  Controller, Get, Post, Put, Param, Body, Query,
   ParseIntPipe, UseGuards,
 } from '@nestjs/common';
 import { AsistenciaService } from './asistencia.service';
-import { CreateAsistenciaDto } from './dto/create-asistencia.dto';
+import { CreateAsistenciaDto, UpdateAsistenciaDetalleDto } from './dto/create-asistencia.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Usuario } from '../usuarios/usuario.entity';
@@ -30,6 +30,14 @@ export class AsistenciaController {
     @CurrentUser() user: Usuario,
   ) {
     return this.service.create(dto, user.id);
+  }
+
+  @Put(':id')
+  updateDetalle(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateAsistenciaDetalleDto,
+  ) {
+    return this.service.updateDetalle(id, dto.detalle);
   }
 
   @Get('resumen/miembro/:miembroId')

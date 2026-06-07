@@ -9,6 +9,7 @@ import { GruposModule } from './grupos/grupos.module';
 import { AsistenciaModule } from './asistencia/asistencia.module';
 import { EnsenanzasModule } from './ensenanzas/ensenanzas.module';
 import { FinanzasModule } from './finanzas/finanzas.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { FinanzasModule } from './finanzas/finanzas.module';
     AsistenciaModule,
     EnsenanzasModule,
     FinanzasModule,
+    StatsModule,
   ],
 })
 export class AppModule {}

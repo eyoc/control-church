@@ -16,6 +16,7 @@ import TableContainer from '@mui/material/TableContainer';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { paths } from 'src/routes/paths';
+import { useRouter } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
 import { useIglesia } from 'src/hooks/use-iglesia';
@@ -39,6 +40,7 @@ const TIPO_COLORS: Record<string, 'primary' | 'secondary' | 'default'> = {
 };
 
 export function AsistenciaListView() {
+  const router = useRouter();
   const { iglesiaId } = useIglesia();
   const [registros, setRegistros] = useState<Asistencia[]>([]);
   const [loading, setLoading] = useState(false);
@@ -85,7 +87,12 @@ export function AsistenciaListView() {
                   </TableRow>
                 )}
                 {registros.map((r) => (
-                  <TableRow key={r.id} hover>
+                  <TableRow
+                    key={r.id}
+                    hover
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => router.push(paths.dashboard.asistencia.detalle(r.id))}
+                  >
                     <TableCell>{r.fecha}</TableCell>
                     <TableCell>{r.titulo ?? '—'}</TableCell>
                     <TableCell>

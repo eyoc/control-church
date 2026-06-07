@@ -1,18 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
 import TableRow from '@mui/material/TableRow';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 import TableContainer from '@mui/material/TableContainer';
 import CircularProgress from '@mui/material/CircularProgress';
+import DialogContentText from '@mui/material/DialogContentText';
 
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
@@ -20,6 +26,8 @@ import { RouterLink } from 'src/routes/components';
 import { useIglesia } from 'src/hooks/use-iglesia';
 
 import axios, { endpoints } from 'src/lib/axios';
+
+import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -37,8 +45,9 @@ export function MiembrosListView() {
   const [miembros, setMiembros] = useState<Miembro[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     if (!iglesiaId) return;
     setLoading(true);
     axios
@@ -47,6 +56,22 @@ export function MiembrosListView() {
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, [iglesiaId]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await axios.delete(`${endpoints.miembros}/${deleteId}`);
+      setDeleteId(null);
+      fetchData();
+    } catch (e: any) {
+      setError(e.message);
+      setDeleteId(null);
+    }
+  };
 
   return (
     <Box sx={{ p: 3 }}>
@@ -63,7 +88,7 @@ export function MiembrosListView() {
 
       {!iglesiaId && (
         <Typography color="warning.main">
-          Seleccioná una iglesia para ver los miembros.
+          Seleccion&aacute; una iglesia para ver los miembros.
         </Typography>
       )}
 
@@ -78,14 +103,15 @@ export function MiembrosListView() {
                 <TableRow>
                   <TableCell>Nombre</TableCell>
                   <TableCell>Email</TableCell>
-                  <TableCell>Teléfono</TableCell>
+                  <TableCell>Tel&eacute;fono</TableCell>
                   <TableCell>Estado</TableCell>
+                  <TableCell align="right">Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {miembros.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={4} align="center">
+                    <TableCell colSpan={5} align="center">
                       No hay miembros registrados
                     </TableCell>
                   </TableRow>
@@ -95,9 +121,26 @@ export function MiembrosListView() {
                     <TableCell>
                       {m.nombre} {m.apellido}
                     </TableCell>
-                    <TableCell>{m.email ?? '—'}</TableCell>
-                    <TableCell>{m.telefono ?? '—'}</TableCell>
+                    <TableCell>{m.email ?? '\u2014'}</TableCell>
+                    <TableCell>{m.telefono ?? '\u2014'}</TableCell>
                     <TableCell>{m.esActivo ? 'Activo' : 'Inactivo'}</TableCell>
+                    <TableCell align="right">
+                      <IconButton
+                        component={RouterLink}
+                        href={paths.dashboard.miembros.editar(m.id)}
+                        color="primary"
+                        size="small"
+                      >
+                        <Iconify icon="solar:pen-bold" />
+                      </IconButton>
+                      <IconButton
+                        color="error"
+                        size="small"
+                        onClick={() => setDeleteId(m.id)}
+                      >
+                        <Iconify icon="solar:trash-bin-trash-bold" />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -105,6 +148,21 @@ export function MiembrosListView() {
           </TableContainer>
         </Card>
       )}
+
+      <Dialog open={!!deleteId} onClose={() => setDeleteId(null)}>
+        <DialogTitle>Eliminar miembro</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            &iquest;Est&aacute;s seguro de que deseas eliminar este miembro? Esta acci&oacute;n no se puede deshacer.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteId(null)}>Cancelar</Button>
+          <Button onClick={handleDelete} color="error" variant="contained">
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

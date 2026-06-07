@@ -69,4 +69,5 @@ export const endpoints = {
     egresos: '/api/finanzas/egresos',
     resumen: '/api/finanzas/resumen',
   },
+  stats: '/api/stats',
 } as const;
