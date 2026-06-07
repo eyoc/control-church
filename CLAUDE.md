@@ -17,9 +17,10 @@
 | Deploy Frontend | Vercel |
 
 ## Estado Actual
-- `frontend/` → plantilla Minimal Kit instalada con `npm install`
-- `backend/` → plantilla NestJS instalada, **SIN módulos ni código de negocio aún**
-- Base de datos → scripts SQL creados (ver abajo), **pendiente verificar estado en Azure**
+- `frontend/` → Next.js 15 + Minimal Kit, desplegado en Vercel (`tuiglesia.tulogro.dev`)
+- `backend/` → NestJS con 9 módulos completos + Stats, desplegado en Azure App Service
+- Base de datos → Azure SQL con 16 tablas + seed de datos demo
+- CI/CD → GitHub Actions para backend (`.github/workflows/deploy-backend.yml`), Vercel auto-deploy para frontend
 
 ## Reglas de Desarrollo
 
@@ -183,6 +184,54 @@ cd frontend
 npm run dev             # desarrollo
 npm run build           # compilar para Vercel
 ```
+
+## Convenciones de Código Frontend
+
+### Componentes y Formularios
+- Usar MUI `MenuItem` (nunca `<option>` nativo) dentro de `Field.Select`
+- Formularios: `react-hook-form` + `zod` + `@hookform/resolvers`
+- Cada formulario en su propio archivo: `form-view.tsx` (crear), `edit-view.tsx` (editar)
+- Cada vista de lista en: `list-view.tsx`
+- Pages en: `frontend/src/app/dashboard/<modulo>/page.tsx`
+
+### Patrones de Datos
+- Usar `useIglesia()` hook para obtener `iglesiaId` en todas las vistas
+- Axios interceptor envía JWT automáticamente desde `sessionStorage`
+- Endpoints centralizados en `frontend/src/lib/axios.ts`
+- Al hacer login, auto-seleccionar la primera iglesia del usuario
+
+### Manejo de Errores
+- Mostrar errores con `<Alert severity="error">` en formularios
+- Los errores de API se propagan desde el interceptor de axios
+- Backend usa `HttpExceptionFilter` global para formatear errores
+
+### Acciones en Listas
+- Columna "Acciones" con `IconButton` (editar: `solar:pen-bold`, eliminar: `solar:trash-bin-trash-bold`)
+- Eliminar siempre con diálogo de confirmación (`Dialog` de MUI)
+- Después de eliminar, refrescar la lista
+- Usar soft delete (campo `activo: false`) en backend
+
+### UI y Responsividad
+- Grid responsive: `<Grid size={{ xs: 12, sm: 6 }}>` para 2 columnas en desktop, 1 en móvil
+- Formularios dentro de `<Card><CardContent>` con `spacing={3}`
+- Botones de acción: `variant="contained"` para primario, `variant="outlined"` para cancelar
+- Formatear moneda Guatemala: `Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' })`
+
+## Deploy
+
+### Frontend (Vercel)
+- Auto-deploy en push a `main`
+- Variable: `NEXT_PUBLIC_SERVER_URL` → URL del App Service Azure
+
+### Backend (Azure App Service)
+- GitHub Actions: `.github/workflows/deploy-backend.yml`
+- Se activa en push a `main` con cambios en `backend/` o manualmente
+- Startup command: `node dist/main.js`
+- Variables de entorno configuradas en Azure Portal
+
+### Push desde OneDrive
+- El repo está en OneDrive → `mmap` falla con `git push`
+- Workaround: clonar en `/tmp/cc-push/control-church`, rsync cambios, push desde ahí
 
 ## Notas Importantes
 - Las iglesias evangélicas en Guatemala generalmente son **Exentas de IVA** (Decreto 20-2006).
