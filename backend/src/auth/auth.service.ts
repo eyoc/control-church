@@ -82,6 +82,28 @@ export class AuthService {
     return this.buildTokenResponse(usuario);
   }
 
+  async getMe(userId: number) {
+    const usuario = await this.usuariosRepo.findOne({
+      where: { id: userId, activo: true },
+      relations: ['usuarioIglesiaRoles', 'usuarioIglesiaRoles.iglesia', 'usuarioIglesiaRoles.rol'],
+    });
+    if (!usuario) throw new UnauthorizedException();
+    return {
+      id: usuario.id,
+      email: usuario.email,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      fotoUrl: usuario.fotoUrl,
+      iglesias: usuario.usuarioIglesiaRoles
+        .filter((uir) => uir.activo)
+        .map((uir) => ({
+          iglesiaId: uir.iglesiaId,
+          nombre: uir.iglesia?.nombre,
+          rol: uir.rol?.nombre,
+        })),
+    };
+  }
+
   private buildTokenResponse(usuario: Usuario) {
     const payload: JwtPayload = { sub: usuario.id, email: usuario.email };
     return {

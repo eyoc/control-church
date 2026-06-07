@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
 import CardContent from '@mui/material/CardContent';
 
 import { paths } from 'src/routes/paths';
@@ -87,9 +88,9 @@ export function GrupoFormView() {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <Field.Select name="diaReunion" label="Día de reunión">
-                  <option value="">Sin especificar</option>
+                  <MenuItem value="">Sin especificar</MenuItem>
                   {DIAS.map((d) => (
-                    <option key={d} value={d}>{d.charAt(0).toUpperCase() + d.slice(1)}</option>
+                    <MenuItem key={d} value={d}>{d.charAt(0).toUpperCase() + d.slice(1)}</MenuItem>
                   ))}
                 </Field.Select>
               </Grid>

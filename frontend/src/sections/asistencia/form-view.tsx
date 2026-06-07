@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
 import CardContent from '@mui/material/CardContent';
 
 import { paths } from 'src/routes/paths';
@@ -80,9 +81,9 @@ export function AsistenciaFormView() {
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <Field.Select name="tipo" label="Tipo de evento">
-                  <option value="servicio">Servicio</option>
-                  <option value="celula">Célula</option>
-                  <option value="evento">Evento especial</option>
+                  <MenuItem value="servicio">Servicio</MenuItem>
+                  <MenuItem value="celula">Célula</MenuItem>
+                  <MenuItem value="evento">Evento especial</MenuItem>
                 </Field.Select>
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>

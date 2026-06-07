@@ -37,6 +37,11 @@ export function AuthProvider({ children }: Props) {
 
         const user = res.data;
 
+        // Auto-seleccionar la primera iglesia si no hay una seleccionada
+        if (user.iglesias?.length && !localStorage.getItem('cc_iglesia_id')) {
+          localStorage.setItem('cc_iglesia_id', String(user.iglesias[0].iglesiaId));
+        }
+
         setState({ user: { ...user, accessToken }, loading: false });
       } else {
         setState({ user: null, loading: false });

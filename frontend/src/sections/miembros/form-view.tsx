@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
 import CardContent from '@mui/material/CardContent';
 
 import { paths } from 'src/routes/paths';
@@ -96,9 +97,9 @@ export function MiembroFormView() {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <Field.Select name="genero" label="Género">
-                  <option value="">Sin especificar</option>
-                  <option value="M">Masculino</option>
-                  <option value="F">Femenino</option>
+                  <MenuItem value="">Sin especificar</MenuItem>
+                  <MenuItem value="M">Masculino</MenuItem>
+                  <MenuItem value="F">Femenino</MenuItem>
                 </Field.Select>
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
